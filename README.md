@@ -21,7 +21,7 @@ reader = dictreader.DictReader("names.xlsx", worksheet="Sheet1")
 Output:
 ```
 Boris Johnson
-Donald Trum
+Donald Trump
 Mark Rutte
 ```
 
