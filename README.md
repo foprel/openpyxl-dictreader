@@ -8,20 +8,39 @@ A module that maps the information in each row in an [openpyxl](https://github.c
 pip install openpyxl-dictreader
 ```
 
-## Example
+## Examples
+### Example 1
+Input:
 ```python
->>> import dictreader
+import dictreader
 
->>> reader = dictreader.DictReader("names.xlsx", worksheet="Sheet1")
-... for row in reader:
-...     print(row["First Name"], row["Last Name"])
-...
+reader = dictreader.DictReader("names.xlsx", worksheet="Sheet1")
+    for row in reader:
+    print(row["First Name"], row["Last Name"])
+```
+
+Output:
+```python
 Boris Johnson
-Donal Trump
+Donald Trum
 Mark Rutte
+```
 
->>> print(row)
+### Example 2
+Input:
+```python
+import dictreader
+
+reader = dictreader.DictReader("names.xlsx", worksheet="Sheet1")
+    for row in reader:
+    print(row)
+```
+
+Output:
+```python
 {'First Name': 'Borish', 'Last Name': 'Johnson'}
+{'First Name': 'Donald', 'Last Name': 'Trump'}
+{'First Name': 'Mark', 'Last Name': 'Rutte'}
 ```
 
 ## Acknowledgements
