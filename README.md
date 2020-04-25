@@ -9,7 +9,6 @@ pip install openpyxl-dictreader
 ```
 
 ## Examples
-### Example 1
 Input:
 ```python
 import dictreader
@@ -20,27 +19,10 @@ reader = dictreader.DictReader("names.xlsx", worksheet="Sheet1")
 ```
 
 Output:
-```python
+```
 Boris Johnson
 Donald Trum
 Mark Rutte
-```
-
-### Example 2
-Input:
-```python
-import dictreader
-
-reader = dictreader.DictReader("names.xlsx", worksheet="Sheet1")
-    for row in reader:
-    print(row)
-```
-
-Output:
-```python
-{'First Name': 'Borish', 'Last Name': 'Johnson'}
-{'First Name': 'Donald', 'Last Name': 'Trump'}
-{'First Name': 'Mark', 'Last Name': 'Rutte'}
 ```
 
 ## Acknowledgements
