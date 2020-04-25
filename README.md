@@ -19,6 +19,6 @@ for row in reader:
 ```
 
 ## Acknowledgements
-⋅⋅*[openpyxl](https://github.com/chronossc/openpyxl)
-⋅⋅*[csv](https://docs.python.org/3/library/csv.html#csv.DictReader)
+* [openpyxl](https://github.com/chronossc/openpyxl)
+* [csv](https://docs.python.org/3/library/csv.html#csv.DictReader)
 
