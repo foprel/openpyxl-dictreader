@@ -11,10 +11,10 @@ pip install openpyxl-dictreader
 ## Examples
 Input:
 ```python
-import dictreader
+import openpyxl_dictreader
 
-reader = dictreader.DictReader("names.xlsx", worksheet="Sheet1")
-    for row in reader:
+reader = openpyxl_dictreader.DictReader("names.xlsx", worksheet="Sheet1")
+for row in reader:
     print(row["First Name"], row["Last Name"])
 ```
 
