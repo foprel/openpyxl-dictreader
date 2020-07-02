@@ -4,4 +4,5 @@ README.rst
 build/
 dist/
 openpyxl_dictreader.egg-info/
+env/
 openpyxl_dictreader.pyc

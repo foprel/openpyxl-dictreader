@@ -13,7 +13,7 @@ Input:
 ```python
 import openpyxl_dictreader
 
-reader = openpyxl_dictreader.DictReader("names.xlsx", worksheet="Sheet1")
+reader = openpyxl_dictreader.DictReader("names.xlsx", "Sheet1")
 for row in reader:
     print(row["First Name"], row["Last Name"])
 ```
@@ -23,6 +23,13 @@ Output:
 Boris Johnson
 Donald Trump
 Mark Rutte
+```
+
+## load_workbook keyword arguments
+The openpyxl load_workbook method takes several optional keyword arguments. These can be passed into the openpyxl_dictreader.DictReader constructor as keyword arguments:
+
+```python
+reader = openpyxl_dictreader.DictReader("names.xlsx", "Sheet1", read_only=False, keep_vba=False, data_only=False, keep_links=True)
 ```
 
 ## Acknowledgements
