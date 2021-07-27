@@ -8,10 +8,18 @@ def reader(iterator):
 
 
 class DictReader:
-
-    def __init__(self, filename, worksheet, fieldnames=None, restval=None, restkey=None, *args, **kwargs):
+    def __init__(
+        self,
+        filename,
+        worksheet="",
+        fieldnames=None,
+        restval=None,
+        restkey=None,
+        *args,
+        **kwargs
+    ):
         self.wb = load_workbook(filename, **kwargs)
-        self.ws = self.wb[worksheet]
+        self.ws = worksheet and self.wb[worksheet] or self.wb.active
         self.reader = reader(self.ws)
         self._fieldnames = fieldnames
         self.restkey = restkey
