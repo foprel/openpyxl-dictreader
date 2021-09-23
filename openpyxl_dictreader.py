@@ -7,7 +7,7 @@ def reader(iterator):
         yield row
 
 
-class DictReader:
+class DictReader(object):
     def __init__(
         self,
         filename,
@@ -60,3 +60,5 @@ class DictReader:
             for key in self.fieldnames[lr:]:
                 d[key] = self.restval
         return d
+
+    next = __next__  # Python 2
