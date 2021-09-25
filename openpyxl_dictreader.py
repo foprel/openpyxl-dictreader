@@ -7,11 +7,19 @@ def reader(iterator):
         yield row
 
 
-class DictReader:
-
-    def __init__(self, filename, worksheet, fieldnames=None, restval=None, restkey=None, *args, **kwargs):
+class DictReader(object):
+    def __init__(
+        self,
+        filename,
+        worksheet="",
+        fieldnames=None,
+        restval=None,
+        restkey=None,
+        *args,
+        **kwargs
+    ):
         self.wb = load_workbook(filename, **kwargs)
-        self.ws = self.wb[worksheet]
+        self.ws = worksheet and self.wb[worksheet] or self.wb.active
         self.reader = reader(self.ws)
         self._fieldnames = fieldnames
         self.restkey = restkey
@@ -52,3 +60,5 @@ class DictReader:
             for key in self.fieldnames[lr:]:
                 d[key] = self.restval
         return d
+
+    next = __next__  # Python 2
