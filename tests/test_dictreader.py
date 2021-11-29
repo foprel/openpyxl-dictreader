@@ -4,9 +4,6 @@
 import unittest
 from io import BytesIO
 from tempfile import TemporaryFile
-from itertools import permutations
-from textwrap import dedent
-from collections import OrderedDict
 from openpyxl import Workbook
 from openpyxl_dictreader import DictReader
 
