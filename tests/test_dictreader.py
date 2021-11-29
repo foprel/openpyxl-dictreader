@@ -2,6 +2,7 @@
     heavily leveraged from the CPython tests """
 
 import unittest
+from io import BytesIO
 from tempfile import TemporaryFile
 from itertools import permutations
 from textwrap import dedent
@@ -91,13 +92,6 @@ class TestDictFields(unittest.TestCase):
                 next(reader), {"f1": "1", "f2": "2", "_rest": ["abc", "4", "5", "6"]}
             )
 
-    # The dict reader does not deal with 'restkey' yet.
-    #    It is expecting blank return values but is getting 'None'
-
-    #  E           AssertionError: Lists differ: ['f1', 'f2', None, None, None, None] != ['f1', 'f2']
-    #  E           First list contains 4 additional elements.
-
-    # @unittest.skip("DictReader does not handle 'restkey' option yet")
     def test_read_long_with_rest_no_fieldnames(self):
         wb = Workbook()
         ws = wb.active
@@ -117,9 +111,6 @@ class TestDictFields(unittest.TestCase):
                 next(reader), {"f1": "1", "f2": "2", "_rest": ["abc", "4", "5", "6"]}
             )
 
-    # The dict reader does not deal with 'restval' yet.
-    #    It is expecting blank return values but is getting 'None'
-    # @unittest.skip("DictReader does not handle 'restval' option yet")
     def test_read_short(self):
         wb = Workbook()
         ws = wb.active
@@ -206,82 +197,75 @@ class TestDictFields(unittest.TestCase):
 
 
 class KeyOrderingTest(unittest.TestCase):
-    @unittest.skip("requires DictWriter, which is not ready yet")
-    def test_ordering_for_the_dict_reader_and_writer(self):
-        resultset = set()
-        for keys in permutations("abcde"):
-            with TemporaryFile("w+", newline="", encoding="utf-8") as fileobject:
-                dw = csv.DictWriter(fileobject, keys)
-                dw.writeheader()
-                fileobject.seek(0)
-                dr = csv.DictReader(fileobject)
-                kt = tuple(dr.fieldnames)
-                self.assertEqual(keys, kt)
-                resultset.add(kt)
-        # Final sanity check: were all permutations unique?
-        self.assertEqual(
-            len(resultset),
-            120,
-            "Key ordering: some key permutations not collected (expected 120)",
-        )
 
-    @unittest.skip("OrderedDict no longer used")
     def test_ordered_dict_reader(self):
-        data = dedent(
-            """\
-            FirstName,LastName
-            Eric,Idle
-            Graham,Chapman,Over1,Over2
-            Under1
-            John,Cleese
-        """
-        ).splitlines()
+        stream = BytesIO()
+        rows = (
+            ("FirstName", "LastName"),
+            ("Eric", "Idle"),
+            ("Graham", "Chapman", "Over1", "Over2"),
+            (),
+            ("Under1",),
+            ("John", "Cleese"),
+        )
+        wb = Workbook()
+        ws = wb.active
+        for row in rows:
+            ws.append(row)
+        wb.save(stream)
 
         self.assertEqual(
-            list(csv.DictReader(data)),
+            list(DictReader(stream)),
             [
-                OrderedDict([("FirstName", "Eric"), ("LastName", "Idle")]),
-                OrderedDict(
+                dict([("FirstName", "Eric"), ("LastName", "Idle")]),
+                dict(
                     [
                         ("FirstName", "Graham"),
                         ("LastName", "Chapman"),
                         (None, ["Over1", "Over2"]),
                     ]
                 ),
-                OrderedDict([("FirstName", "Under1"), ("LastName", None)]),
-                OrderedDict([("FirstName", "John"), ("LastName", "Cleese")]),
+                dict([("FirstName", "Under1"), ("LastName", None)]),
+                dict([("FirstName", "John"), ("LastName", "Cleese")]),
             ],
         )
 
         self.assertEqual(
-            list(csv.DictReader(data, restkey="OtherInfo")),
+            list(DictReader(stream, restkey="OtherInfo")),
             [
-                OrderedDict([("FirstName", "Eric"), ("LastName", "Idle")]),
-                OrderedDict(
+                dict([("FirstName", "Eric"), ("LastName", "Idle")]),
+                dict(
                     [
                         ("FirstName", "Graham"),
                         ("LastName", "Chapman"),
                         ("OtherInfo", ["Over1", "Over2"]),
                     ]
                 ),
-                OrderedDict([("FirstName", "Under1"), ("LastName", None)]),
-                OrderedDict([("FirstName", "John"), ("LastName", "Cleese")]),
+                dict([("FirstName", "Under1"), ("LastName", None)]),
+                dict([("FirstName", "John"), ("LastName", "Cleese")]),
             ],
         )
 
-        del data[0]  # Remove the header row
+        # test with header-less file
+        stream = BytesIO()
+        wb = Workbook()
+        ws = wb.active
+        for row in rows[1:]: # skip the header
+            ws.append(row)
+        wb.save(stream)
         self.assertEqual(
-            list(csv.DictReader(data, fieldnames=["fname", "lname"])),
+            list(DictReader(stream, fieldnames=["fname", "lname"])),
             [
-                OrderedDict([("fname", "Eric"), ("lname", "Idle")]),
-                OrderedDict(
+                dict([("fname", "Eric"), ("lname", "Idle")]),
+                dict(
                     [
                         ("fname", "Graham"),
                         ("lname", "Chapman"),
                         (None, ["Over1", "Over2"]),
                     ]
                 ),
-                OrderedDict([("fname", "Under1"), ("lname", None)]),
-                OrderedDict([("fname", "John"), ("lname", "Cleese")]),
+                dict([("fname", "Under1"), ("lname", None)]),
+                dict([("fname", "John"), ("lname", "Cleese")]),
             ],
         )
+
