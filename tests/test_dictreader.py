@@ -97,7 +97,7 @@ class TestDictFields(unittest.TestCase):
     #  E           AssertionError: Lists differ: ['f1', 'f2', None, None, None, None] != ['f1', 'f2']
     #  E           First list contains 4 additional elements.
 
-    @unittest.skip("DictReader does not handle 'restkey' option yet")
+    # @unittest.skip("DictReader does not handle 'restkey' option yet")
     def test_read_long_with_rest_no_fieldnames(self):
         wb = Workbook()
         ws = wb.active
@@ -119,7 +119,7 @@ class TestDictFields(unittest.TestCase):
 
     # The dict reader does not deal with 'restval' yet.
     #    It is expecting blank return values but is getting 'None'
-    @unittest.skip("DictReader does not handle 'restval' option yet")
+    # @unittest.skip("DictReader does not handle 'restval' option yet")
     def test_read_short(self):
         wb = Workbook()
         ws = wb.active
