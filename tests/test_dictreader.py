@@ -51,6 +51,14 @@ class TestDictFields(unittest.TestCase):
             self.assertEqual(next(reader), {"John": 1, "Sebastian": 2, "Bach": 3})
             self.assertEqual(reader.fieldnames, ['John', 'Sebastian', 'Bach'])
 
+    def test_read_dict_fieldnames_from_blank_file(self):
+        wb = Workbook()
+        ws = wb.active
+        with TemporaryFile() as fileobj:
+            wb.save(fileobj)
+            reader = DictReader(fileobj)
+            self.assertIsNone(reader.fieldnames)
+
     def test_read_dict_fieldnames_chain(self):
         import itertools
 
