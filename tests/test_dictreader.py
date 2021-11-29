@@ -38,6 +38,19 @@ class TestDictFields(unittest.TestCase):
             self.assertEqual(next(reader), {"f1": "1", "f2": "2", "f3": "abc"})
             self.assertEqual(reader.fieldnames, ["f1", "f2", "f3"])
 
+    def test_read_dict_set_fieldnames(self):
+        wb = Workbook()
+        ws = wb.active
+        ws["A1"] = 1
+        ws["B1"] = 2
+        ws["C1"] = 3
+        with TemporaryFile() as fileobj:
+            wb.save(fileobj)
+            reader = DictReader(fileobj)
+            reader.fieldnames = ['John', 'Sebastian', 'Bach']
+            self.assertEqual(next(reader), {"John": 1, "Sebastian": 2, "Bach": 3})
+            self.assertEqual(reader.fieldnames, ['John', 'Sebastian', 'Bach'])
+
     def test_read_dict_fieldnames_chain(self):
         import itertools
 
