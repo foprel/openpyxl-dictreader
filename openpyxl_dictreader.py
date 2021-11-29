@@ -49,8 +49,11 @@ class DictReader(object):
         row = next(self.reader)
         self.line_num += 1
 
-        while row == []:
-            row = next(iter(self.ws_list))
+        # skip blank lines
+        while all(cell is None for cell in row):
+            row = next(self.reader)
+            self.line_num += 1
+            
         d = dict(zip(self.fieldnames, row))
         lf = len(self.fieldnames)
         lr = len(row)

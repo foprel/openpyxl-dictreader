@@ -185,7 +185,6 @@ class TestDictFields(unittest.TestCase):
                 },
             )
 
-    @unittest.skip("DictReader does not handle blank lines yet")
     def test_read_with_blanks(self):
         wb = Workbook()
         ws = wb.active
