@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
-
 with open('README.md') as f:
     readme = f.read()
 
 with open('LICENSE') as f:
     license = f.read()
 
-with open('requirements.txt', encoding='utf-16') as f:
-    requirements = [r for r in f.read().splitlines()]
+requirements = [
+    "openpyxl~=3.0.3"
+]
 
 setup(
     name='openpyxl-dictreader',
@@ -23,4 +23,3 @@ setup(
     license=license,
     py_modules=["openpyxl_dictreader"]
 )
-
