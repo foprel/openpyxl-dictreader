@@ -7,15 +7,12 @@ with open('README.md') as f:
 with open('LICENSE') as f:
     license = f.read()
 
-requirements = [
-    "et-xmlfile==1.0.1",
-    "jdcal==1.4.1",
-    "openpyxl==3.0.3",
-    ]
+with open('requirements.txt', encoding='utf-16') as f:
+    requirements = [r for r in f.read().splitlines()]
 
 setup(
     name='openpyxl-dictreader',
-    version='0.1.4',
+    version='0.1.5',
     description='A simple package to read openpyxl worksheets like a csv DictReader',
     long_description=readme,
     long_description_content_type='text/markdown',
