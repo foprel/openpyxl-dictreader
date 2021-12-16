@@ -60,11 +60,23 @@ class DictReader(object):
             
         d = dict(zip(self.fieldnames, row))
         lf = len(self.fieldnames)
-        lr = sum(cell is not None for cell in row) # number of non-blank cell in row
-        if lf < lr:
+
+        # number of non-blank cell in row. Useful for restkey= argument
+        lr_key = sum(cell is not None for cell in row) 
+
+        # number of cells that are not trailing "None" values, if restval= is set to something other than none
+        # note: restval= argument is not too useful for data in grids, like spreadsheets.
+        lr_val = len(row)
+        # if self.restval is not None:
+        for item in reversed(row):
+            if item is not None:
+                break
+            lr_val -= 1
+
+        if lf < lr_key:
             d[self.restkey] = row[lf:]
-        elif lf > lr:
-            for key in self.fieldnames[lr:]:
+        elif lf > lr_val:
+            for key in self.fieldnames[lr_val:]:
                 d[key] = self.restval
         return d
 
