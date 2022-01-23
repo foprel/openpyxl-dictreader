@@ -35,10 +35,6 @@ class DictReader(object):
                 self._fieldnames = next(self.reader)
             except StopIteration:
                 pass
-
-        # screen out `None` values. They represent blank cells.
-        if self._fieldnames:
-            self._fieldnames = [f for f in self._fieldnames if f is not None]
         self.line_num += 1
         return self._fieldnames
 
