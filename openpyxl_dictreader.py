@@ -15,6 +15,7 @@ class DictReader(object):
         fieldnames=None,
         restval=None,
         restkey=None,
+        skip_blank_lines=False,
         *args,
         **kwargs
     ):
@@ -24,6 +25,7 @@ class DictReader(object):
         self._fieldnames = fieldnames
         self.restkey = restkey
         self.restval = restval
+        self.skip_blank_lines = skip_blank_lines
         self.line_num = 0
 
     @property
@@ -49,8 +51,12 @@ class DictReader(object):
         row = next(self.reader)
         self.line_num += 1
 
-        while row == []:
-            row = next(iter(self.ws_list))
+        while (
+            self.skip_blank_lines and
+            all(cell is None for cell in row)
+        ):
+            row = next(self.reader)
+    
         d = dict(zip(self.fieldnames, row))
         lf = len(self.fieldnames)
         lr = len(row)
