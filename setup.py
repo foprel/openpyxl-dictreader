@@ -12,7 +12,7 @@ requirements = [
 
 setup(
     name='openpyxl-dictreader',
-    version='0.1.6',
+    version='0.1.7',
     description='A simple package to read openpyxl worksheets like a csv DictReader',
     long_description=readme,
     long_description_content_type='text/markdown',
