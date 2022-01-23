@@ -63,7 +63,7 @@ class DictReader(object):
 
         d = dict(zip(self.fieldnames, row))
         lf = len(self.fieldnames)
-        lr = sum(cell is not None for cell in row) # number of non-blank cell in row
+        lr = len(row)
         if lf < lr:
             d[self.restkey] = row[lf:]
         elif lf > lr:
