@@ -35,6 +35,10 @@ class DictReader(object):
                 self._fieldnames = next(self.reader)
             except StopIteration:
                 pass
+
+        # screen out `None` values. They represent blank cells.
+        if self._fieldnames:
+            self._fieldnames = [f for f in self._fieldnames if f is not None]
         self.line_num += 1
         return self._fieldnames
 
@@ -56,10 +60,10 @@ class DictReader(object):
             all(cell is None for cell in row)
         ):
             row = next(self.reader)
-    
+
         d = dict(zip(self.fieldnames, row))
         lf = len(self.fieldnames)
-        lr = len(row)
+        lr = sum(cell is not None for cell in row) # number of non-blank cell in row
         if lf < lr:
             d[self.restkey] = row[lf:]
         elif lf > lr:
